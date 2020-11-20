@@ -3,7 +3,13 @@ module File
   )
 where
 
-readLines :: String -> IO [String]
+import Control.Exception
+
+-- Returns either a Left (error message), or
+-- Right (lines in file).
+readLines :: String -> IO (Either String [String])
 readLines filename = do
-  content <- readFile filename
-  return (lines content)
+  content <- (try (readFile filename) :: IO (Either SomeException String))
+  return $ case content of
+    Left failure -> Left $ displayException failure
+    Right result -> Right $ lines result
