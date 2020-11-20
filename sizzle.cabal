@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 67499460d88f151da0ba8ae52ca3f953db89e39ac67e5f29f88490649d560bdf
+-- hash: bed12400b38c0596d6fa40ac63f60fa271528f6414f442e62bd2ff28b0b82ce8
 
 name:           sizzle
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      File
       Lib
   other-modules:
       Paths_sizzle
