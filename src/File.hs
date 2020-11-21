@@ -1,5 +1,6 @@
 module File
   ( readLines,
+    writeLines,
   )
 where
 
@@ -13,3 +14,13 @@ readLines filename = do
   return $ case content of
     Left failure -> Left $ displayException failure
     Right result -> Right $ lines result
+
+-- Returns either a Left (error message), or
+-- Right (lines written).
+writeLines :: FilePath -> [String] -> IO (Either String Int)
+writeLines filename inputLines = do
+  let len = length inputLines
+  result <- (try (writeFile filename (unlines inputLines)) :: IO (Either SomeException ()))
+  return $ case result of
+    Left failure -> Left $ displayException failure
+    Right _ -> Right len
