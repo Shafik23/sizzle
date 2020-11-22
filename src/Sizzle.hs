@@ -1,4 +1,4 @@
-module Lib
+module Sizzle
   ( module File,
     helloSizzle,
   )

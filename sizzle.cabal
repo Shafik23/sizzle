@@ -27,10 +27,10 @@ source-repository head
 
 library
   exposed-modules:
-      File
-      Lib
+      Sizzle
   other-modules:
       Paths_sizzle
+      File
   hs-source-dirs:
       src
   build-depends:

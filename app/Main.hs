@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import Sizzle
 
 main :: IO ()
 main = do
