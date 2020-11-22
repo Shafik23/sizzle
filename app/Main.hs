@@ -1,6 +1,5 @@
 module Main where
 
-import File
 import Lib
 
 main :: IO ()
