@@ -21,6 +21,6 @@ writeLines filename inputLines = do
   result <- (try (writeFile filename (unlines inputLines)) :: IO (Either SomeException ()))
   return $ transformEither result (const len)
 
-transformEither :: Either SomeException t -> (t -> b) -> Either String b
+transformEither :: Either SomeException a -> (a -> b) -> Either String b
 transformEither (Left failure) _ = Left $ displayException failure
 transformEither (Right success) f = Right (f success)
