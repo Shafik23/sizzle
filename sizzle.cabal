@@ -31,6 +31,7 @@ library
   other-modules:
       Paths_sizzle
       File
+      Series
   hs-source-dirs:
       src
   build-depends:
