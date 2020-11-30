@@ -7,6 +7,7 @@ module Series
     odds,
     factorials,
     sums,
+    products,
   )
 where
 
@@ -15,6 +16,9 @@ fibonacci = 0 : 1 : zipWith (+) fibonacci (tail fibonacci)
 
 factorials :: [Integer]
 factorials = 1 : zipWith (*) factorials [1 ..]
+
+products :: [Integer]
+products = factorials
 
 sums :: [Integer]
 sums = 0 : zipWith (+) sums [1 ..]
