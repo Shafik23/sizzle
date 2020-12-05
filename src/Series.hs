@@ -1,5 +1,6 @@
 module Series
   ( fibonacci,
+    fibonacci2,
     primes,
     primesSlow,
     naturals,
@@ -13,6 +14,9 @@ where
 
 fibonacci :: [Integer]
 fibonacci = 0 : 1 : zipWith (+) fibonacci (tail fibonacci)
+
+fibonacci2 :: [Integer]
+fibonacci2 = map fst $ (iterate $ \(n1, n2) -> (n2, n2 + n1)) (0, 1)
 
 factorials :: [Integer]
 factorials = 1 : zipWith (*) factorials [1 ..]
