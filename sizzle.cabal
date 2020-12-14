@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: bed12400b38c0596d6fa40ac63f60fa271528f6414f442e62bd2ff28b0b82ce8
+-- hash: 712544ca03707594a913f6a511bf4b074a32de877e12179e394fff81428e6d9b
 
 name:           sizzle
 version:        0.1.0.0
@@ -27,20 +27,22 @@ source-repository head
 
 library
   exposed-modules:
+      File
+      Learn
+      Math
+      Network
+      Series
       Sizzle
   other-modules:
       Paths_sizzle
-      File
-      Series
-      Math
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
     , containers
+    , microlens-platform
+    , transformers
   default-language: Haskell2010
-  default-extensions:
-      ScopedTypeVariables
 
 executable sizzle-exe
   main-is: Main.hs
@@ -51,7 +53,10 @@ executable sizzle-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
+    , microlens-platform
     , sizzle
+    , transformers
   default-language: Haskell2010
 
 test-suite sizzle-test
@@ -64,5 +69,8 @@ test-suite sizzle-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
+    , microlens-platform
     , sizzle
+    , transformers
   default-language: Haskell2010
