@@ -2,9 +2,13 @@ module Learn
   ( pop,
     push,
     simulateStack',
+    DelayedAction (DelayedAction),
+    getInsideAction,
   )
 where
 
+import Control.Concurrent
+import Control.Monad (ap, liftM)
 import Control.Monad.Trans.State
 
 pop :: State [Int] Int
@@ -27,3 +31,28 @@ simulateStack' = do
   x <- pop
   push (x * x)
   pop
+
+newtype DelayedAction a = DelayedAction (IO a)
+
+getInsideAction :: DelayedAction a -> IO a
+getInsideAction (DelayedAction x) = x
+
+instance Functor DelayedAction where
+  fmap = liftM
+
+instance Applicative DelayedAction where
+  pure = return
+  (<*>) = ap
+
+instance Monad DelayedAction where
+  return x = DelayedAction (threadDelay 1000000 >> return x)
+
+  (DelayedAction firstIO) >>= f = undefined
+
+  (DelayedAction firstIO) >> (DelayedAction secondIO) =
+    DelayedAction
+      ( do
+          firstIO
+          threadDelay 1000000
+          secondIO
+      )
