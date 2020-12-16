@@ -45,7 +45,7 @@ instance Applicative DelayedAction where
 instance Monad DelayedAction where
   return x = DelayedAction (return x)
 
-  (DelayedAction firstIO) >>= f = undefined
+  da >>= f = DelayedAction (threadDelay 1000000 >> action da >>= action . f)
 
   (DelayedAction firstIO) >> (DelayedAction secondIO) =
     DelayedAction
