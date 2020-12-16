@@ -45,12 +45,16 @@ instance Applicative DelayedAction where
 instance Monad DelayedAction where
   return x = DelayedAction (return x)
 
-  da >>= f = DelayedAction (threadDelay 1000000 >> action da >>= action . f)
-
-  (DelayedAction firstIO) >> (DelayedAction secondIO) =
+  da >>= f =
     DelayedAction
       ( do
-          firstIO
+          firstIOValue <- action da
           threadDelay 1000000
-          secondIO
+          (action . f) firstIOValue
       )
+
+-- De-sugared version of above!
+-- da >>= f =
+--   DelayedAction
+--     ( action da >>= (\firstIOValue -> threadDelay 1000000 >> (action . f) firstIOValue)
+--     )
