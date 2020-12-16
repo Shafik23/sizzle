@@ -3,13 +3,14 @@ module Learn
     push,
     simulateStack',
     DelayedAction (DelayedAction),
-    getInsideAction,
+    action,
   )
 where
 
 import Control.Concurrent
-import Control.Monad (ap, liftM)
+import Control.Monad (ap, join, liftM)
 import Control.Monad.Trans.State
+import System.IO.Unsafe
 
 pop :: State [Int] Int
 pop = state (\(x : xs) -> (x, xs))
@@ -20,7 +21,7 @@ push x = state (\xs -> ((), x : xs))
 -- Monadic threading of the "stack",
 -- implemented using the State monad.
 simulateStack :: State [Int] Int
-simulateStack = (push 3) >> pop >>= (\x -> push (x * x)) >> pop
+simulateStack = push 3 >> pop >>= (\x -> push (x * x)) >> pop
 
 -- Do-syntax version of above; feels more
 -- natural to imperative eyes.
@@ -32,10 +33,7 @@ simulateStack' = do
   push (x * x)
   pop
 
-newtype DelayedAction a = DelayedAction (IO a)
-
-getInsideAction :: DelayedAction a -> IO a
-getInsideAction (DelayedAction x) = x
+newtype DelayedAction a = DelayedAction {action :: IO a}
 
 instance Functor DelayedAction where
   fmap = liftM
@@ -45,7 +43,7 @@ instance Applicative DelayedAction where
   (<*>) = ap
 
 instance Monad DelayedAction where
-  return x = DelayedAction (threadDelay 1000000 >> return x)
+  return x = DelayedAction (return x)
 
   (DelayedAction firstIO) >>= f = undefined
 
