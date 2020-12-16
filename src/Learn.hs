@@ -10,7 +10,6 @@ where
 import Control.Concurrent
 import Control.Monad (ap, join, liftM)
 import Control.Monad.Trans.State
-import System.IO.Unsafe
 
 pop :: State [Int] Int
 pop = state (\(x : xs) -> (x, xs))
