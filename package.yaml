@@ -24,6 +24,7 @@ dependencies:
   - containers
   - microlens-platform
   - transformers
+  - mtl
 
 library:
   source-dirs: src

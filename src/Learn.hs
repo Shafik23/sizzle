@@ -4,13 +4,21 @@ module Learn
     simulateStack',
     DelayedAction (DelayedAction),
     action,
+    firstReader,
+    secondReader,
+    thirdReader,
   )
 where
 
 import Control.Concurrent
 import Control.Monad (ap, join, liftM)
+import Control.Monad.Reader
 import Control.Monad.Trans.State
+import Data.List
 
+-----------------------------------
+--- State Monad
+-----------------------------------
 pop :: State [Int] Int
 pop = state (\(x : xs) -> (x, xs))
 
@@ -57,3 +65,20 @@ instance Monad DelayedAction where
 --   DelayedAction
 --     ( action da >>= (\firstIOValue -> threadDelay 1000000 >> (action . f) firstIOValue)
 --     )
+
+-----------------------------------
+--- Reader Monad
+-----------------------------------
+firstReader :: Reader [String] Int
+firstReader = reader length
+
+secondReader :: Reader [String] String
+secondReader = reader head
+
+thirdReader :: Reader [String] String
+thirdReader = do
+  env <- ask
+  let render = intercalate "," env
+  r1 <- firstReader
+  r2 <- secondReader
+  return $ "Env is of size " ++ show r1 ++ ", with head == " ++ r2 ++ ", Env == " ++ render
