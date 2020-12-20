@@ -23,4 +23,4 @@ writeLines filename inputLines = do
 
 transformEither :: Either SomeException a -> (a -> b) -> Either String b
 transformEither (Left failure) _ = Left $ displayException failure
-transformEither (Right success) f = Right (f success)
+transformEither (Right success) f = fmap f (Right success)
