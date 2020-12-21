@@ -26,6 +26,9 @@ dependencies:
   - transformers
   - mtl
 
+default-extensions:
+  - OverloadedStrings
+
 library:
   source-dirs: src
 
