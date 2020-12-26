@@ -3,6 +3,7 @@
 
 module Math
   ( Vector,
+    powerset,
     distance,
     toVector,
     centroid,
@@ -79,3 +80,9 @@ initializeSimple 0 _ = []
 initializeSimple n v =
   (fromIntegral n, fromIntegral n) :
   initializeSimple (n -1) v
+
+powerset :: [a] -> [[a]]
+powerset [] = [[]]
+powerset (x : xs) = existing ++ map (x :) existing
+  where
+    existing = powerset xs
