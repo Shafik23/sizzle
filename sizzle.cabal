@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1aea6124a557cc6a88fdbb2858f5b09fc21e64e2fdf972c8356c40445f45791d
+-- hash: 541f974f1fe4d072becdbedb4ef969f3a221cff9d4f6a6617e4ece3a04d46390
 
 name:           sizzle
 version:        0.1.0.0
@@ -43,6 +43,7 @@ library
     , containers
     , microlens-platform
     , mtl
+    , random
     , transformers
   default-language: Haskell2010
 
@@ -59,6 +60,7 @@ executable sizzle-exe
     , containers
     , microlens-platform
     , mtl
+    , random
     , sizzle
     , transformers
   default-language: Haskell2010
@@ -77,6 +79,7 @@ test-suite sizzle-test
     , containers
     , microlens-platform
     , mtl
+    , random
     , sizzle
     , transformers
   default-language: Haskell2010

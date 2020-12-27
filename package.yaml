@@ -25,6 +25,7 @@ dependencies:
   - microlens-platform
   - transformers
   - mtl
+  - random
 
 default-extensions:
   - OverloadedStrings
