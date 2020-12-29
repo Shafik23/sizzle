@@ -4,6 +4,7 @@
 module Math
   ( Vector,
     powerset,
+    powerset',
     distance,
     toVector,
     centroid,
@@ -12,6 +13,7 @@ module Math
   )
 where
 
+import Control.Monad (filterM)
 import Data.List
 import qualified Data.Map as M
 
@@ -86,3 +88,8 @@ powerset [] = [[]]
 powerset (x : xs) = existing ++ map (x :) existing
   where
     existing = powerset xs
+
+-- This is a somewhat mind-blowing definition of powerset
+-- See discussion: https://stackoverflow.com/questions/25476248/powerset-function-1-liner
+powerset' :: [a] -> [[a]]
+powerset' = filterM (const [False, True])
