@@ -10,7 +10,7 @@ import Control.Exception
 -- Right (lines in file).
 readLines :: String -> IO (Either String [String])
 readLines filename = do
-  content <- (try (readFile filename) :: IO (Either SomeException String))
+  content <- try (readFile filename)
   return $ transformEither content lines
 
 -- Returns either a Left (error message), or
@@ -18,7 +18,7 @@ readLines filename = do
 writeLines :: FilePath -> [String] -> IO (Either String Int)
 writeLines filename inputLines = do
   let len = length inputLines
-  result <- (try (writeFile filename (unlines inputLines)) :: IO (Either SomeException ()))
+  result <- try (writeFile filename (unlines inputLines))
   return $ transformEither result (const len)
 
 -- Takes an Either <exception> <result> and translates it to
