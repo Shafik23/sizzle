@@ -26,6 +26,9 @@ dependencies:
   - transformers
   - mtl
   - random
+  - text
+  - http-conduit
+  - bytestring
 
 default-extensions:
   - OverloadedStrings
