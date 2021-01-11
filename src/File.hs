@@ -1,21 +1,25 @@
 module File
   ( readLines,
     writeLines,
+    FailableIO,
   )
 where
 
 import Control.Exception
+import Data.String
+
+type FailableIO a = IO (Either String a)
 
 -- Returns either a Left (error message), or
 -- Right (lines in file).
-readLines :: String -> IO (Either String [String])
+readLines :: String -> FailableIO [String]
 readLines filename = do
   content <- try (readFile filename)
   return $ transformEither content lines
 
 -- Returns either a Left (error message), or
 -- Right (lines written).
-writeLines :: FilePath -> [String] -> IO (Either String Int)
+writeLines :: FilePath -> [String] -> FailableIO Int
 writeLines filename inputLines = do
   let len = length inputLines
   result <- try (writeFile filename (unlines inputLines))
