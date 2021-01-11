@@ -6,28 +6,37 @@ module File
 where
 
 import Control.Exception
+import Data.Functor
 import Data.String
 
+-- This type gives you either a:
+-- Left  <String error message>    OR
+-- Right <result of type a>
 type FailableIO a = IO (Either String a)
 
 -- Returns either a Left (error message), or
 -- Right (lines in file).
 readLines :: String -> FailableIO [String]
 readLines filename = do
-  content <- try (readFile filename)
-  return $ transformEither content lines
+  content <- tryIO (readFile filename)
+  return $ fmap lines content
 
 -- Returns either a Left (error message), or
 -- Right (lines written).
 writeLines :: FilePath -> [String] -> FailableIO Int
 writeLines filename inputLines = do
   let len = length inputLines
-  result <- try (writeFile filename (unlines inputLines))
-  return $ transformEither result (const len)
+  result <- tryIO (writeFile filename (unlines inputLines))
+  return $ fmap (const len) result
 
 -- Takes an Either <exception> <result> and translates it to
 -- an Either <Error message> <transformed result>; the second argument
 -- is a function that transforms the result, if it was successful.
-transformEither :: Either SomeException a -> (a -> b) -> Either String b
-transformEither (Left failure) _ = Left $ displayException failure
-transformEither (Right success) f = fmap f (Right success)
+transformEither :: (a -> b) -> Either SomeException a -> Either String b
+transformEither _ (Left failure) = Left $ displayException failure
+transformEither f (Right success) = fmap f (Right success)
+
+tryIO :: IO a -> FailableIO a
+tryIO action =
+  -- <&> is simply fmap with the arguments flipped (i.e. flip fmap)
+  try action <&> transformEither id
