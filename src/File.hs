@@ -37,6 +37,6 @@ transformEither _ (Left failure) = Left $ displayException failure
 transformEither f (Right success) = fmap f (Right success)
 
 tryIO :: IO a -> FailableIO a
-tryIO action =
-  -- <&> is simply fmap with the arguments flipped (i.e. flip fmap)
-  try action <&> transformEither id
+tryIO = transform . try
+  where
+    transform = fmap (transformEither id)
