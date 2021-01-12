@@ -1,6 +1,7 @@
 module EZIO
   ( readLines,
     writeLines,
+    tryIO,
     FailableIO,
   )
 where

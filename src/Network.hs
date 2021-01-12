@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Network
   ( httpGet,
     httpPost,
@@ -25,19 +27,23 @@ httpHelper method url = do
   response <- httpBS request
   return $ (decodeUtf8 . getResponseBody) response
 
-httpGet :: Url -> IO T.Text
-httpGet = httpHelper GET
+failableHttp :: Method -> Url -> FailableIO T.Text
+failableHttp method url = tryIO $ httpHelper method url
 
-httpPost :: Url -> IO T.Text
-httpPost = httpHelper POST
+httpGet :: Url -> FailableIO T.Text
+httpGet = failableHttp GET
 
-httpPatch :: Url -> IO T.Text
-httpPatch = httpHelper PATCH
+httpPost :: Url -> FailableIO T.Text
+httpPost = failableHttp POST
 
-httpDelete :: Url -> IO T.Text
-httpDelete = httpHelper DEL
+httpPatch :: Url -> FailableIO T.Text
+httpPatch = failableHttp PATCH
+
+httpDelete :: Url -> FailableIO T.Text
+httpDelete = failableHttp DEL
 
 wget :: Url -> FilePath -> FailableIO Int
 wget url filename =
-  httpGet url >>= \content ->
-    writeLines filename (map T.unpack (T.lines content))
+  httpGet url >>= \case
+    (Left failure) -> return (Left failure)
+    (Right response) -> writeLines filename (map T.unpack (T.lines response))
