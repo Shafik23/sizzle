@@ -46,4 +46,4 @@ wget :: Url -> FilePath -> FailableIO Int
 wget url filename =
   httpGet url >>= \case
     (Left failure) -> return (Left failure)
-    (Right response) -> writeLines filename (map T.unpack (T.lines response))
+    (Right urlData) -> writeLines filename (map T.unpack (T.lines urlData))
