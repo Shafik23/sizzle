@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e860b40fa4eeb01683f0b8c95a5e78bbefa7fcb9fb537bc400efd2e0be7c7540
+-- hash: b4ee05a94045bd64e06e5c9d1b113e07e653d1c7c39a80441dcc26ea50d241b3
 
 name:           sizzle
-version:        0.1.0.0
+version:        0.2.0.0
 description:    Please see the README on GitHub at <https://github.com/shafik23/sizzle#readme>
 homepage:       https://github.com/shafik23/sizzle#readme
 bug-reports:    https://github.com/shafik23/sizzle/issues
@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      File
+      EZIO
       Learn
       Math
       Network

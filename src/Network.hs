@@ -12,7 +12,7 @@ import qualified Data.ByteString.Char8 as B8
 import Data.String
 import qualified Data.Text as T
 import Data.Text.Encoding
-import File
+import EZIO
 import Network.HTTP.Simple
 
 type Url = String

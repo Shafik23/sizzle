@@ -1,4 +1,4 @@
-module File
+module EZIO
   ( readLines,
     writeLines,
     FailableIO,

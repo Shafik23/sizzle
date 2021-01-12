@@ -1,13 +1,15 @@
 module Sizzle
-  ( module File,
+  ( module EZIO,
+    module Network,
     module Series,
     module Math,
     helloSizzle,
   )
 where
 
-import File
+import EZIO
 import Math
+import Network
 import Series
 
 helloSizzle :: IO ()
