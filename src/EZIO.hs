@@ -2,33 +2,37 @@ module EZIO
   ( readLines,
     writeLines,
     tryIO,
-    FailableIO,
   )
 where
 
 import Control.Exception
-import Data.Functor
-import Data.String
+import Control.Monad.IO.Class
+import Control.Monad.Trans.Except
 
--- This type gives you either a:
--- Left  <String error message>    OR
--- Right <result of type a>
-type FailableIO a = IO (Either String a)
+type EitherT = ExceptT
+
+type FailableIO a = EitherT String IO a
 
 -- Returns either a Left (error message), or
 -- Right (lines in file).
-readLines :: String -> FailableIO [String]
-readLines filename = do
+readLinesHelper :: String -> FailableIO [String]
+readLinesHelper filename = do
   content <- tryIO (readFile filename)
-  return $ fmap lines content
+  return (lines content)
+
+readLines :: FilePath -> IO (Either String [String])
+readLines = runExceptT . readLinesHelper
 
 -- Returns either a Left (error message), or
 -- Right (lines written).
-writeLines :: FilePath -> [String] -> FailableIO Int
-writeLines filename inputLines = do
+writeLinesHelper :: FilePath -> [String] -> FailableIO Int
+writeLinesHelper filename inputLines = do
   let len = length inputLines
   result <- tryIO (writeFile filename (unlines inputLines))
-  return $ fmap (const len) result
+  return len
+
+writeLines :: FilePath -> [String] -> IO (Either String Int)
+writeLines filename inputLines = runExceptT $ writeLinesHelper filename inputLines
 
 -- Takes an Either <exception> <result> and translates it to
 -- an Either <Error message> <transformed result>; the second argument
@@ -38,6 +42,7 @@ transformEither _ (Left failure) = Left $ displayException failure
 transformEither f (Right success) = fmap f (Right success)
 
 tryIO :: IO a -> FailableIO a
-tryIO = transform . try
-  where
-    transform = fmap (transformEither id)
+tryIO action = do
+  result <- liftIO (try action)
+  let resultTransformed = transformEither id result
+  except resultTransformed

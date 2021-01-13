@@ -10,6 +10,7 @@ module Network
 where
 
 import Control.Exception
+import Control.Monad.Trans.Except (runExceptT)
 import qualified Data.ByteString.Char8 as B8
 import Data.String
 import qualified Data.Text as T
@@ -27,22 +28,22 @@ httpHelper method url = do
   response <- httpBS request
   return $ (decodeUtf8 . getResponseBody) response
 
-failableHttp :: Method -> Url -> FailableIO T.Text
-failableHttp method url = tryIO $ httpHelper method url
+failableHttp :: Method -> Url -> IO (Either String T.Text)
+failableHttp method url = runExceptT $ tryIO (httpHelper method url)
 
-httpGet :: Url -> FailableIO T.Text
+httpGet :: Url -> IO (Either String T.Text)
 httpGet = failableHttp GET
 
-httpPost :: Url -> FailableIO T.Text
+httpPost :: Url -> IO (Either String T.Text)
 httpPost = failableHttp POST
 
-httpPatch :: Url -> FailableIO T.Text
+httpPatch :: Url -> IO (Either String T.Text)
 httpPatch = failableHttp PATCH
 
-httpDelete :: Url -> FailableIO T.Text
+httpDelete :: Url -> IO (Either String T.Text)
 httpDelete = failableHttp DEL
 
-wget :: Url -> FilePath -> FailableIO Int
+wget :: Url -> FilePath -> IO (Either String Int)
 wget url filename =
   httpGet url >>= \case
     (Left failure) -> return (Left failure)
