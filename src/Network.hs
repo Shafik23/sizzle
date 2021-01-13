@@ -29,7 +29,7 @@ httpHelper method url = do
   return $ (decodeUtf8 . getResponseBody) response
 
 failableHttp :: Method -> Url -> IO (Either String T.Text)
-failableHttp method url = runExceptT $ tryIO (httpHelper method url)
+failableHttp method url = tryIO (httpHelper method url)
 
 httpGet :: Url -> IO (Either String T.Text)
 httpGet = failableHttp GET

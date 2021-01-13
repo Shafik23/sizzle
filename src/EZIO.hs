@@ -11,28 +11,22 @@ import Control.Monad.Trans.Except
 
 type EitherT = ExceptT
 
-type FailableIO a = EitherT String IO a
+type FailableIO a = IO (Either String a)
 
 -- Returns either a Left (error message), or
 -- Right (lines in file).
-readLinesHelper :: String -> FailableIO [String]
-readLinesHelper filename = do
+readLines :: String -> FailableIO [String]
+readLines filename = do
   content <- tryIO (readFile filename)
-  return (lines content)
-
-readLines :: FilePath -> IO (Either String [String])
-readLines = runExceptT . readLinesHelper
+  return (fmap lines content)
 
 -- Returns either a Left (error message), or
 -- Right (lines written).
-writeLinesHelper :: FilePath -> [String] -> FailableIO Int
-writeLinesHelper filename inputLines = do
+writeLines :: FilePath -> [String] -> FailableIO Int
+writeLines filename inputLines = do
   let len = length inputLines
   result <- tryIO (writeFile filename (unlines inputLines))
-  return len
-
-writeLines :: FilePath -> [String] -> IO (Either String Int)
-writeLines filename inputLines = runExceptT $ writeLinesHelper filename inputLines
+  return (fmap (const len) result)
 
 -- Takes an Either <exception> <result> and translates it to
 -- an Either <Error message> <transformed result>; the second argument
@@ -41,8 +35,11 @@ transformEither :: (a -> b) -> Either SomeException a -> Either String b
 transformEither _ (Left failure) = Left $ displayException failure
 transformEither f (Right success) = fmap f (Right success)
 
-tryIO :: IO a -> FailableIO a
-tryIO action = do
+tryIOHelper :: IO a -> EitherT String IO a
+tryIOHelper action = do
   result <- liftIO (try action)
   let resultTransformed = transformEither id result
   except resultTransformed
+
+tryIO :: IO a -> IO (Either String a)
+tryIO = runExceptT . tryIOHelper
