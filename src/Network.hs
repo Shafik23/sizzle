@@ -9,14 +9,13 @@ module Network
   )
 where
 
-import Control.Exception
 import Control.Monad.Trans.Except (runExceptT)
 import qualified Data.ByteString.Char8 as B8
-import Data.String
 import qualified Data.Text as T
-import Data.Text.Encoding
-import EZIO
+import Data.Text.Encoding (decodeUtf8)
+import EZIO (tryIO, writeLines)
 import Network.HTTP.Simple
+import Web.Scotty
 
 type Url = String
 

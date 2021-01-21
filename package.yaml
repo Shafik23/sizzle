@@ -29,6 +29,7 @@ dependencies:
   - text
   - http-conduit
   - bytestring
+  - scotty
 
 default-extensions:
   - OverloadedStrings
@@ -38,6 +39,9 @@ library:
 
 executables:
   sizzle-exe:
+    when:
+      - condition: false
+        other-modules: Paths_sizzle
     main: Main.hs
     source-dirs: app
     ghc-options:
