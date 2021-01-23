@@ -30,6 +30,12 @@ dependencies:
   - http-conduit
   - bytestring
   - scotty
+  - cookie
+  - wai
+  - wai-extra
+  - wai-middleware-static
+  - blaze-builder
+  - digestive-functors
 
 default-extensions:
   - OverloadedStrings
