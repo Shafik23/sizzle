@@ -35,6 +35,8 @@ dependencies:
   - wai-extra
   - wai-middleware-static
   - blaze-builder
+  - aeson
+  - lens-aeson
   - digestive-functors
 
 default-extensions:
