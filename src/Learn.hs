@@ -1,3 +1,5 @@
+{-# LANGUAGE GADTs #-}
+
 module Learn
   ( pop,
     push,
@@ -82,3 +84,12 @@ thirdReader = do
   r1 <- firstReader
   r2 <- secondReader
   return $ "Env is of size " ++ show r1 ++ ", with head == " ++ r2 ++ ", Env == " ++ render
+
+-----------------------------------
+--- GADTs
+-----------------------------------
+
+-- A simple example: the constructors are given concrete types
+data Expr a where
+  III :: Int -> Expr Int
+  BBB :: Bool -> Expr Bool

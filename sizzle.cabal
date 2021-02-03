@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4b79d5cccb4366e903fbfd9013e3f7ba5389ef2f31de57fe2e51020158ca64ed
+-- hash: cf1a38de563770838af3356ec39feb25bc41d5ce5936e8f37e398df9da59a6cb
 
 name:           sizzle
 version:        0.2.0.0
@@ -47,6 +47,7 @@ library
     , cookie
     , digestive-functors
     , http-conduit
+    , lens-aeson
     , microlens-platform
     , mtl
     , random
@@ -73,6 +74,7 @@ executable sizzle-exe
     , cookie
     , digestive-functors
     , http-conduit
+    , lens-aeson
     , microlens-platform
     , mtl
     , random
@@ -106,6 +108,7 @@ test-suite sizzle-test
     , cookie
     , digestive-functors
     , http-conduit
+    , lens-aeson
     , microlens-platform
     , mtl
     , random
