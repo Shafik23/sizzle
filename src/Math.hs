@@ -3,6 +3,7 @@
 
 module Math
   ( Vector,
+    fix,
     powerset,
     powerset',
     distance,
@@ -10,6 +11,7 @@ module Math
     centroid,
     kMeans,
     initializeSimple,
+    permute,
   )
 where
 
@@ -93,3 +95,15 @@ powerset (x : xs) = existing ++ map (x :) existing
 -- See discussion: https://stackoverflow.com/questions/25476248/powerset-function-1-liner
 powerset' :: [a] -> [[a]]
 powerset' = filterM (const [False, True])
+
+-- Returns the "fix point" of a function, i.e. a value x such that
+-- x == f x
+fix :: Eq a => (a -> a) -> a -> a
+fix f x = if x == x' then x else fix f x'
+  where
+    x' = f x
+
+-- Same as Data.List.permutations
+permute :: Eq a => [a] -> [[a]]
+permute [] = [[]]
+permute xs = [x : others | x <- xs, others <- permute (filter (/= x) xs)]
