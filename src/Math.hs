@@ -12,6 +12,7 @@ module Math
     kMeans,
     initializeSimple,
     permute,
+    cartesianProduct,
   )
 where
 
@@ -107,3 +108,8 @@ fix f x = if x == x' then x else fix f x'
 permute :: Eq a => [a] -> [[a]]
 permute [] = [[]]
 permute xs = [x : others | x <- xs, others <- permute (filter (/= x) xs)]
+
+-- Cartesian product of an arbitrary collection of lists
+cartesianProduct :: [[a]] -> [[a]]
+cartesianProduct [] = [[]]
+cartesianProduct (xs : xss) = [x : ys | x <- xs, ys <- cartesianProduct xss]
