@@ -1,4 +1,5 @@
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE TypeFamilies #-}
 
 module Learn
   ( pop,
@@ -9,6 +10,7 @@ module Learn
     firstReader,
     secondReader,
     thirdReader,
+    AbstractType,
   )
 where
 
@@ -93,3 +95,10 @@ thirdReader = do
 data Expr a where
   III :: Int -> Expr Int
   BBB :: Bool -> Expr Bool
+
+-----------------------------------
+--- Type Families
+-----------------------------------
+type family AbstractType e a where
+  AbstractType Int Bool = String
+  AbstractType Bool Bool = Bool
